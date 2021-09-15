@@ -21,5 +21,12 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    implementation 'info.picocli:picocli:4.6.1'
+    annotationProcessor 'info.picocli:picocli-codegen:4.6.1'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+}
+
 group = 'hexlet.code'
 version = '1.0-SNAPSHOT'

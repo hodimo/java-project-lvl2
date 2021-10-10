@@ -24,7 +24,7 @@ class GenDiff implements Callable<Integer> {
     String format = "stylish";
 
     @Override
-    public Integer call() throws Exception { // your business logic goes here...
+    public Integer call() throws Exception {
         System.out.println(Differ.generate(filepath1, filepath2));
         return 0;
     }
@@ -33,7 +33,11 @@ class GenDiff implements Callable<Integer> {
 
 public class App {
     public static void main(String[] args) {
-        int exitCode = new CommandLine(new GenDiff()).execute(args);
-        System.exit(exitCode);
+        try {
+            int exitCode = new CommandLine(new GenDiff()).execute(args);
+            System.exit(exitCode);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
     }
 }

@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 public class Differ {
     static final ObjectMapper MAPPER = new ObjectMapper();
-    static final int PREFIX_END = 3;
+    static final int DIFF_PREFIX_END = 3;
 
     public static String generate(String path1, String path2) throws IOException {
         Map<String, Object> data1 = unserialize(path1);
@@ -39,10 +39,10 @@ public class Differ {
             }
         }
         SortedMap<String, Object> sortedDifferences = new TreeMap<>((key1, key2) ->  {
-            if (key1.substring(PREFIX_END).equals(key2.substring(PREFIX_END))) {
+            if (key1.substring(DIFF_PREFIX_END).equals(key2.substring(DIFF_PREFIX_END))) {
                 return key1.charAt(1) == '-' ? -1 : 1;
             }
-            return key1.substring(PREFIX_END).compareTo(key2.substring(PREFIX_END));
+            return key1.substring(DIFF_PREFIX_END).compareTo(key2.substring(DIFF_PREFIX_END));
         });
         sortedDifferences.putAll(differences);
 
@@ -52,7 +52,7 @@ public class Differ {
     private static String formatDiffs(Map<String, Object> diffs) throws IOException {
         StringBuilder str = new StringBuilder("{");
         for (Map.Entry<String, Object> kvPair: diffs.entrySet()) {
-            String value = "";
+            String value;
             value = MAPPER.writeValueAsString(kvPair.getValue());
             str.append("\n")
                     .append(kvPair.getKey())
@@ -68,7 +68,7 @@ public class Differ {
 
         try {
             jsonAsMap = MAPPER.readValue(Files.readString(
-                    path), new TypeReference<Map<String, Object>>() { });
+                    path), new TypeReference<>() { });
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

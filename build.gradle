@@ -15,7 +15,7 @@ application {
 }
 
 compileJava {
-    options.release = 11
+    options.release = 16
 }
 
 repositories {
@@ -27,6 +27,8 @@ dependencies {
     annotationProcessor 'info.picocli:picocli-codegen:4.6.1'
 
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+
+    implementation 'org.junit.jupiter:junit-jupiter:5.8.2'
 }
 
 group = 'hexlet.code'

@@ -12,7 +12,10 @@ import java.util.concurrent.Callable;
 @Command(name = "gendiff", mixinStandardHelpOptions = true, version = "gendiff 1.0",
         description = "Compares two configuration files and shows a difference.")
 
-class GenDiff implements Callable<Integer> {
+class App implements Callable<Integer> {
+
+    @CommandLine.Spec
+    private CommandLine.Model.CommandSpec spec;
 
     @Parameters(index = "0", description = "path to first file", defaultValue = "/home/proydemte/jsons/json1.json")
     private String filepath1 = "";
@@ -25,16 +28,13 @@ class GenDiff implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        System.out.println(Differ.generate(filepath1, filepath2));
+        spec.commandLine().getOut().println(Differ.generate(filepath1, filepath2));
         return 0;
     }
 
-}
-
-public class App {
     public static void main(String[] args) {
         try {
-            int exitCode = new CommandLine(new GenDiff()).execute(args);
+            int exitCode = new CommandLine(new App()).execute(args);
             System.exit(exitCode);
         } catch (Exception e) {
             e.getStackTrace();

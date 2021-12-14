@@ -22,13 +22,17 @@ repositories {
     mavenCentral()
 }
 
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
     implementation 'info.picocli:picocli:4.6.1'
     annotationProcessor 'info.picocli:picocli-codegen:4.6.1'
 
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
 
-    implementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
 }
 
 group = 'hexlet.code'

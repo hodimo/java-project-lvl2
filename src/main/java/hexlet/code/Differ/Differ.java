@@ -52,18 +52,19 @@ public class Differ {
     private static String formatDiffs(Map<String, Object> diffs) throws IOException {
         StringBuilder str = new StringBuilder("{");
         for (Map.Entry<String, Object> kvPair: diffs.entrySet()) {
-            String value;
-            value = MAPPER.writeValueAsString(kvPair.getValue());
+            String value = MAPPER.writeValueAsString(kvPair.getValue());
             str.append("\n")
                     .append(kvPair.getKey())
-                    .append(": ")
-                    .append(value.replaceAll("\"", ""));
+                    .append(":");
+            if (!value.equals("\"\"")) {
+                str.append(" ").append(value.replaceAll("\"", ""));
+            }
         }
         return str.append("\n}").toString();
     }
 
     private static Map<String, Object> unserialize(String strPath) throws IOException {
-        Path path = Path.of(strPath).toRealPath().normalize();
+        Path path = Path.of(strPath).toAbsolutePath().normalize();
         Map<String, Object> jsonAsMap = new HashMap<>();
 
         try {

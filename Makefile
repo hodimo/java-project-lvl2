@@ -8,7 +8,7 @@ install: clean
 		./gradlew install
 
 run-dist:
-		./build/install/app/bin/app
+		./build/install/app/bin/app $(args)
 
 check-updates:
 		./gradlew dependencyUpdates
@@ -16,5 +16,10 @@ check-updates:
 lint:
 		./gradlew check
 
-build: lint clean
+.PHONY: test
+test:
+		./gradlew test
+
+.PHONY: build
+build: clean lint test
 		./gradlew build

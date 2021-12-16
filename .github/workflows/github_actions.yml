@@ -1,4 +1,4 @@
-name: Java CI
+name: CI
 on: push
 jobs:
   build:
@@ -10,3 +10,7 @@ jobs:
           java-version: 16
       - name: Build with Gradle
         run: make build
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: ae06f444a6023cfbf3fc9a62acce7c7210f319e408b9050161bf433cac8e8215

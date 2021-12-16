@@ -20,6 +20,9 @@ lint:
 test:
 		./gradlew test
 
+report:
+		./gradlew jacocoTestReport
+
 .PHONY: build
 build: clean lint test
 		./gradlew build

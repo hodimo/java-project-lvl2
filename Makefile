@@ -10,11 +10,11 @@ install: clean
 run-dist:
 		./build/install/app/bin/app $(args)
 
-check-updates:
-		./gradlew dependencyUpdates
+run:
+		./gradlew run
 
 lint:
-		./gradlew check
+		./gradlew checkstyleMain checkstyleTest
 
 .PHONY: test
 test:
@@ -22,6 +22,9 @@ test:
 
 report:
 		./gradlew jacocoTestReport
+
+check-updates:
+		./gradlew dependencyUpdates
 
 .PHONY: build
 build: clean lint test

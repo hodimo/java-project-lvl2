@@ -44,8 +44,18 @@ public final class AppTest {
     }
 
     @Test
-    public void testAppWithStylish() throws IOException {
+    public void testAppWithStylishJson() throws IOException {
         int exitCode = cmd.execute("file1.json", "file2.json");
+        String expected = new String(Files.readAllBytes(
+                Paths.get("src/test/resources/expectedDifferences.txt").toAbsolutePath()));
+        String actual = sw.toString();
+        Assertions.assertEquals(0, exitCode);
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testAppWithStylishYaml() throws IOException {
+        int exitCode = cmd.execute("file1.yml", "file2.yml");
         String expected = new String(Files.readAllBytes(
                 Paths.get("src/test/resources/expectedDifferences.txt").toAbsolutePath()));
         String actual = sw.toString();

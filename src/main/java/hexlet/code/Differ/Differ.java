@@ -2,6 +2,8 @@ package hexlet.code.Differ;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hexlet.code.Differ.Factories.ParserFactory;
+import hexlet.code.Differ.Parser.Parser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,12 +18,18 @@ import java.util.HashMap;
 
 
 public class Differ {
-    static final ObjectMapper MAPPER = new ObjectMapper();
-    static final int DIFF_PREFIX_END = 3;
+    private static final int DIFF_PREFIX_END = 3;
 
     public static String generate(String path1, String path2) throws IOException {
-        Map<String, Object> data1 = unserialize(path1);
-        Map<String, Object> data2 = unserialize(path2);
+        if (!ParserFactory.getParser(path1).getClass()
+                .equals(ParserFactory.getParser(path2).getClass())) {
+            throw new IOException("Please use file with the same type");
+        }
+
+        final Parser parser = ParserFactory.getParser(path1);
+
+        Map<String, Object> data1 = parser.unserializeToMap(path1);
+        Map<String, Object> data2 = parser.unserializeToMap(path2);
 
         Map<String, Object> differences = new WeakHashMap<>(); //can't work with null values on other maps
         Set<String> mergedKeys = new TreeSet<>(data1.keySet());
@@ -46,33 +54,28 @@ public class Differ {
         });
         sortedDifferences.putAll(differences);
 
-        return formatDiffs(sortedDifferences);
+        return formatDiffs(sortedDifferences, parser);
     }
 
-    private static String formatDiffs(Map<String, Object> diffs) throws IOException {
-        StringBuilder str = new StringBuilder("{");
-        for (Map.Entry<String, Object> kvPair: diffs.entrySet()) {
-            String value = MAPPER.writeValueAsString(kvPair.getValue());
-            str.append("\n")
-                    .append(kvPair.getKey())
-                    .append(":");
-            if (!value.equals("\"\"")) {
-                str.append(" ").append(value.replaceAll("\"", ""));
-            }
+    private static String formatDiffs(Map<String, Object> sortedDifferences, Parser parser) throws IOException {
+        if (parser.getClass().getName().contains("Json")) {
+            return parser.serialize(sortedDifferences)
+                    .replaceAll("\"", "")
+                    .replaceAll("\\s\\+\\s", "\n + ")
+                    .replaceAll("\\s-\\s", "\n - ")
+                    .replaceAll("\s{3}", "\n   ")
+                    .replaceAll(",\n", "\n")
+                    .replaceAll("}$", "\n}")
+                    .replaceAll("(:(.*)\n)", ": $2\n")
+                    .replaceAll(": \n", ":\n");
+        } else if (parser.getClass().getName().contains("Yaml")) {
+            String s = parser.serialize(sortedDifferences)
+                    .replaceAll("^-{3}", "{")
+                    .replaceAll("'", "")
+                    .replaceAll("\"", "") + "}"
+                    .replaceAll("(:(.*)\n)", ": $2\n");
+            return s.replaceAll(":\s\n", ":\n");
         }
-        return str.append("\n}").toString();
-    }
-
-    private static Map<String, Object> unserialize(String strPath) throws IOException {
-        Path path = Path.of(strPath).toAbsolutePath().normalize();
-        Map<String, Object> jsonAsMap = new HashMap<>();
-
-        try {
-            jsonAsMap = MAPPER.readValue(Files.readString(
-                    path), new TypeReference<>() { });
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return jsonAsMap;
+        return "You need to think more.";
     }
 }

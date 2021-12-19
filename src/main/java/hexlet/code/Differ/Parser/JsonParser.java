@@ -1,6 +1,5 @@
 package hexlet.code.Differ.Parser;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -14,7 +13,7 @@ public class JsonParser extends Parser {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Override
-    public Map<String, Object> unserializeToMap(String pathFile) throws IOException {
+    public final Map<String, Object> unserializeToMap(String pathFile) throws IOException {
         Path path = Path.of(pathFile).toAbsolutePath().normalize();
         Map<String, Object> jsonAsMap = new HashMap<>();
 
@@ -28,7 +27,7 @@ public class JsonParser extends Parser {
     }
 
     @Override
-    public String serialize(Object value) throws IOException {
+    public final String serialize(Object value) throws IOException {
         return MAPPER.writeValueAsString(value);
     }
 }

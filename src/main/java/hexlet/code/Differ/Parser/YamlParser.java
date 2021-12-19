@@ -14,7 +14,7 @@ public class YamlParser extends Parser {
     private static final ObjectMapper MAPPER = new ObjectMapper(new YAMLFactory());
 
     @Override
-    public Map<String, Object> unserializeToMap(String pathFile) {
+    public final Map<String, Object> unserializeToMap(String pathFile) {
         Path path = Path.of(pathFile).toAbsolutePath().normalize();
         Map<String, Object> yamlAsMap = new HashMap<>();
 
@@ -28,7 +28,7 @@ public class YamlParser extends Parser {
     }
 
     @Override
-    public String serialize(Object value) throws IOException{
+    public final String serialize(Object value) throws IOException {
         return MAPPER.writeValueAsString(value);
     }
 }

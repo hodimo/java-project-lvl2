@@ -1,5 +1,5 @@
 setup:
-		gradle wrapper --gradle-version 7.2
+		gradle wrapper --gradle-version 7.3.2
 
 clean:
 		./gradlew clean
@@ -14,7 +14,7 @@ run:
 		./gradlew run
 
 lint:
-		./gradlew checkstyleMain checkstyleTest
+		./gradlew check
 
 .PHONY: test
 test:

@@ -1,20 +1,15 @@
 package hexlet.code.Differ;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.Differ.Factories.ParserFactory;
 import hexlet.code.Differ.Parser.Parser;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.WeakHashMap;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.HashMap;
 
 
 public class Differ {
@@ -63,18 +58,18 @@ public class Differ {
                     .replaceAll("\"", "")
                     .replaceAll("\\s\\+\\s", "\n + ")
                     .replaceAll("\\s-\\s", "\n - ")
-                    .replaceAll("\s{3}", "\n   ")
+                    .replaceAll("\\s{3}", "\n   ")
                     .replaceAll(",\n", "\n")
                     .replaceAll("}$", "\n}")
                     .replaceAll("(:(.*)\n)", ": $2\n")
                     .replaceAll(": \n", ":\n");
         } else if (parser.getClass().getName().contains("Yaml")) {
-            String s = parser.serialize(sortedDifferences)
+            String str = parser.serialize(sortedDifferences)
                     .replaceAll("^-{3}", "{")
                     .replaceAll("'", "")
                     .replaceAll("\"", "") + "}"
                     .replaceAll("(:(.*)\n)", ": $2\n");
-            return s.replaceAll(":\s\n", ":\n");
+            return str.replaceAll(": \n", ":\n");
         }
         return "You need to think more.";
     }

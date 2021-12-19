@@ -26,9 +26,4 @@ public class YamlParser extends Parser {
         }
         return yamlAsMap;
     }
-
-    @Override
-    public final String serialize(Object value) throws IOException {
-        return MAPPER.writeValueAsString(value);
-    }
 }

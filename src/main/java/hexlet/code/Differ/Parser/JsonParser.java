@@ -25,9 +25,4 @@ public class JsonParser extends Parser {
         }
         return jsonAsMap;
     }
-
-    @Override
-    public final String serialize(Object value) throws IOException {
-        return MAPPER.writeValueAsString(value);
-    }
 }

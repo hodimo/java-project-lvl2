@@ -19,11 +19,6 @@ public class ParserFactory {
             public Map<String, Object> unserializeToMap(String pathFile) throws IOException {
                 throw new IOException("File does not fit to type json or yaml");
             }
-
-            @Override
-            public String serialize(Object value) {
-                return null;
-            }
         };
     }
 }

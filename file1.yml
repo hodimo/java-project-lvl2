@@ -1,7 +1,8 @@
-templatePath: "toolstemplates/"
+---
+templatePath: toolstemplates/
 log: 1
 logLocation: "/usr/local/tomcat/logs/CofaxTools.log"
-logMaxSize: ""
+logMaxSize: ''
 dataLog: 1
 removePageCache: "/content/admin/remove?cache=pages&id="
 removeTemplateCache: "/content/admin/remove?cache=templates&id="

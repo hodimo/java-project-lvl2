@@ -25,7 +25,7 @@ public final class AppTest {
     }
 
     @Test
-    public void testAppHelp() throws IOException {
+    public void testHelp() throws IOException {
         int exitCode = cmd.execute("-h");
         String expected = new String(Files.readAllBytes(
                 Paths.get("src/test/resources/expectedAppHelp.txt").toAbsolutePath()));
@@ -35,7 +35,7 @@ public final class AppTest {
     }
 
     @Test
-    public void testAppVersion() {
+    public void testVersion() {
         int exitCode = cmd.execute("-V");
         String expected = "gendiff 1.0\n";
         String actual = sw.toString();
@@ -44,7 +44,7 @@ public final class AppTest {
     }
 
     @Test
-    public void testAppWithStylish() throws IOException {
+    public void testStylish() throws IOException {
         int exitCode = cmd.execute("file1.json", "file2.json");
         String expected = new String(Files.readAllBytes(
                 Paths.get("src/test/resources/expectedDifferences.txt").toAbsolutePath()));
@@ -54,10 +54,20 @@ public final class AppTest {
     }
 
     @Test
-    public void testAppWithStylishWithNesting() throws IOException {
+    public void testStylishWithNesting() throws IOException {
         int exitCode = cmd.execute("withNesting1.yml", "withNesting2.yml");
         String expected = new String(Files.readAllBytes(
                 Paths.get("src/test/resources/expectedDifferencesWithNesting.txt").toAbsolutePath()));
+        String actual = sw.toString();
+        Assertions.assertEquals(0, exitCode);
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testPlain() throws IOException {
+        int exitCode = cmd.execute("withNesting1.yml", "withNesting2.yml", "-f=plain");
+        String expected = new String(Files.readAllBytes(
+                Paths.get("src/test/resources/expectedDifferencesPlain.txt").toAbsolutePath()));
         String actual = sw.toString();
         Assertions.assertEquals(0, exitCode);
         Assertions.assertEquals(expected, actual);

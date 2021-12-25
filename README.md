@@ -9,12 +9,12 @@
 [![asciicast](https://asciinema.org/a/0ykjaqYlnDf4g7uzlzhS4TDmR.svg)](https://asciinema.org/a/0ykjaqYlnDf4g7uzlzhS4TDmR)
 </details>
 <details>
-    <summary>Json differences demo</summary>
+    <summary>Differences in stylish formats</summary>
 
 [![asciicast](https://asciinema.org/a/oaG0c3QkLNP38RCV2kJyFUlBS.svg)](https://asciinema.org/a/oaG0c3QkLNP38RCV2kJyFUlBS)
 </details>
 <details>
-    <summary>Yaml differences demo</summary>
+    <summary>Differences in plain format</summary>
 
-[![asciicast](https://asciinema.org/a/ANtPd1NDtwn1BpBRe62K6mclr.svg)](https://asciinema.org/a/ANtPd1NDtwn1BpBRe62K6mclr)
+[![asciicast](https://asciinema.org/a/uXtDf3JzuwAKZu3JwnnKfCHag.svg)](https://asciinema.org/a/uXtDf3JzuwAKZu3JwnnKfCHag)
 </details>

@@ -9,12 +9,17 @@
 [![asciicast](https://asciinema.org/a/0ykjaqYlnDf4g7uzlzhS4TDmR.svg)](https://asciinema.org/a/0ykjaqYlnDf4g7uzlzhS4TDmR)
 </details>
 <details>
-    <summary>Differences in stylish formats</summary>
+    <summary>Differences in stylish format</summary>
 
-[![asciicast](https://asciinema.org/a/oaG0c3QkLNP38RCV2kJyFUlBS.svg)](https://asciinema.org/a/oaG0c3QkLNP38RCV2kJyFUlBS)
+[![asciicast](https://asciinema.org/a/WaSvhK3cDwXBmbqgoHUS0aPUJ.svg)](https://asciinema.org/a/WaSvhK3cDwXBmbqgoHUS0aPUJ)
 </details>
 <details>
     <summary>Differences in plain format</summary>
 
-[![asciicast](https://asciinema.org/a/uXtDf3JzuwAKZu3JwnnKfCHag.svg)](https://asciinema.org/a/uXtDf3JzuwAKZu3JwnnKfCHag)
+[![asciicast](https://asciinema.org/a/5KeEdmfPl8OSfF6nfErFvNVmY.svg)](https://asciinema.org/a/5KeEdmfPl8OSfF6nfErFvNVmY)
+</details>
+<details>
+    <summary>Differences in json format</summary>
+
+[![asciicast](https://asciinema.org/a/ChdfIaTdqzqfGn78izVqa47va.svg)](https://asciinema.org/a/ChdfIaTdqzqfGn78izVqa47va)
 </details>

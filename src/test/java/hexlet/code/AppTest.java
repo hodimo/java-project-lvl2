@@ -28,7 +28,7 @@ public final class AppTest {
     public void testHelp() throws IOException {
         int exitCode = cmd.execute("-h");
         String expected = new String(Files.readAllBytes(
-                Paths.get("src/test/resources/expectedAppHelp.txt").toAbsolutePath()));
+                Paths.get("src/test/resources/expected/expectedAppHelp.txt").toAbsolutePath()));
         String actual = sw.toString();
         Assertions.assertEquals(0, exitCode);
         Assertions.assertEquals(expected, actual);
@@ -45,19 +45,10 @@ public final class AppTest {
 
     @Test
     public void testStylish() throws IOException {
-        int exitCode = cmd.execute("file1.json", "file2.json");
+        int exitCode = cmd.execute("src/test/resources/filesWithData/withNesting1.json",
+                "src/test/resources/filesWithData/withNesting2.json");
         String expected = new String(Files.readAllBytes(
-                Paths.get("src/test/resources/expectedDifferences.txt").toAbsolutePath()));
-        String actual = sw.toString();
-        Assertions.assertEquals(0, exitCode);
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testStylishWithNesting() throws IOException {
-        int exitCode = cmd.execute("withNesting1.yml", "withNesting2.yml");
-        String expected = new String(Files.readAllBytes(
-                Paths.get("src/test/resources/expectedDifferencesWithNesting.txt").toAbsolutePath()));
+                Paths.get("src/test/resources/expected/expectedDifferencesWithNesting.txt").toAbsolutePath()));
         String actual = sw.toString();
         Assertions.assertEquals(0, exitCode);
         Assertions.assertEquals(expected, actual);
@@ -65,9 +56,21 @@ public final class AppTest {
 
     @Test
     public void testPlain() throws IOException {
-        int exitCode = cmd.execute("withNesting1.yml", "withNesting2.yml", "-f=plain");
+        int exitCode = cmd.execute("src/test/resources/filesWithData/withNesting1.yml",
+                "src/test/resources/filesWithData/withNesting2.yml", "-f=plain");
         String expected = new String(Files.readAllBytes(
-                Paths.get("src/test/resources/expectedDifferencesPlain.txt").toAbsolutePath()));
+                Paths.get("src/test/resources/expected/expectedDifferencesPlain.txt").toAbsolutePath()));
+        String actual = sw.toString();
+        Assertions.assertEquals(0, exitCode);
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testJson() throws IOException {
+        int exitCode = cmd.execute("src/test/resources/filesWithData/withNesting1.yml",
+                "src/test/resources/filesWithData/withNesting2.yml", "-f=plain");
+        String expected = new String(Files.readAllBytes(
+                Paths.get("src/test/resources/expected/expectedDifferencesPlain.txt").toAbsolutePath()));
         String actual = sw.toString();
         Assertions.assertEquals(0, exitCode);
         Assertions.assertEquals(expected, actual);

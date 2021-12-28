@@ -1,9 +1,9 @@
-package hexlet.code.Differ.Factories;
+package hexlet.code.Factories;
 
-import hexlet.code.Differ.Formatter.Formatter;
-import hexlet.code.Differ.Formatter.JsonFormatter;
-import hexlet.code.Differ.Formatter.PlainFormatter;
-import hexlet.code.Differ.Formatter.StylishFormatter;
+import hexlet.code.Formatter.Formatter;
+import hexlet.code.Formatter.JsonFormatter;
+import hexlet.code.Formatter.PlainFormatter;
+import hexlet.code.Formatter.StylishFormatter;
 
 public class FormatterFactory {
     public static Formatter getFormatter(String formatName) {

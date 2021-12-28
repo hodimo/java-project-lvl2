@@ -1,4 +1,4 @@
-package hexlet.code.Differ.Parser;
+package hexlet.code.Parser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

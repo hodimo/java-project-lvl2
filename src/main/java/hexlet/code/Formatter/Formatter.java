@@ -1,6 +1,6 @@
-package hexlet.code.Differ.Formatter;
+package hexlet.code.Formatter;
 
-import hexlet.code.Differ.Parser.Parser;
+import hexlet.code.Parser.Parser;
 
 import java.io.IOException;
 import java.util.List;

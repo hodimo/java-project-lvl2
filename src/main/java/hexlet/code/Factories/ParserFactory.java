@@ -1,8 +1,8 @@
-package hexlet.code.Differ.Factories;
+package hexlet.code.Factories;
 
-import hexlet.code.Differ.Parser.JsonParser;
-import hexlet.code.Differ.Parser.Parser;
-import hexlet.code.Differ.Parser.YamlParser;
+import hexlet.code.Parser.JsonParser;
+import hexlet.code.Parser.Parser;
+import hexlet.code.Parser.YamlParser;
 
 import java.io.IOException;
 import java.util.Map;

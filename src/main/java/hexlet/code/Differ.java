@@ -1,10 +1,8 @@
 package hexlet.code;
 
-import hexlet.code.Factories.FormatterFactory;
-import hexlet.code.Factories.ParserFactory;
-import hexlet.code.Parser.Parser;
-
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -14,22 +12,17 @@ import java.util.TreeSet;
 
 
 public class Differ {
-    public static String differ(String path1, String path2, String format) throws IOException {
-        if (!ParserFactory.getParser(path1).getClass()
-                .equals(ParserFactory.getParser(path2).getClass())) {
-            throw new IOException("Please use file with the same type");
-        }
+    public static String generate(String path1, String path2, String formatName) throws IOException {
+        Path filePath1 = Path.of(path1).toAbsolutePath().normalize();
+        Path filePath2 = Path.of(path2).toAbsolutePath().normalize();
 
-        final Parser parser = ParserFactory.getParser(path1);
-        Map<String, Object> data1 = parser.unserializeToMap(path1);
-        Map<String, Object> data2 = parser.unserializeToMap(path2);
-        Map<String, List<Object>> differences = generate(data1, data2);
+        Map<String, Object> data1 = Parser.parse(
+                Files.readString(filePath1),
+                path1.endsWith(".json") ? "json" : "yaml");
+        Map<String, Object> data2 = Parser.parse(
+                Files.readString(filePath2),
+                path2.endsWith(".json") ? "json" : "yaml");
 
-        return FormatterFactory.getFormatter(format)
-                .format(differences, parser);
-    }
-
-    private static Map<String, List<Object>> generate(Map<String, Object> data1, Map<String, Object> data2) {
         Map<String, List<Object>> differences = new LinkedHashMap<>();
         Set<String> mergedKeys = new TreeSet<>(data1.keySet());
         mergedKeys.addAll(data2.keySet());
@@ -57,6 +50,6 @@ public class Differ {
             }
             values.clear();
         }
-        return differences;
+        return Formatter.format(differences, formatName);
     }
 }

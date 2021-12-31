@@ -28,7 +28,7 @@ class App implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        spec.commandLine().getOut().println(Differ.differ(filepath1, filepath2, format));
+        spec.commandLine().getOut().println(Differ.generate(filepath1, filepath2, format));
         return 0;
     }
 

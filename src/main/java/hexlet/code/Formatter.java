@@ -48,6 +48,7 @@ public class Formatter {
         diffs.append("\n}");
 
         return diffs.toString()
+                .replaceAll("(\\\"):(\\\"|(.+))", "$1=$1$3")
                 .replaceAll("\"", "")
                 .replaceAll(",\\n", "\n")
                 .replaceAll("((( {4})|( {2}- )|( {2}\\+ )).+:) \\n", "$1\n")

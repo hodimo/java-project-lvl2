@@ -13,6 +13,18 @@ import java.util.TreeSet;
 
 public class Differ {
     public static String generate(String path1, String path2, String formatName) throws IOException {
+        return Formatter.format(
+                genIntermediateDiff(path1, path2),
+                formatName);
+    }
+
+    public static String generate(String path1, String path2) throws IOException {
+        return Formatter.format(
+                genIntermediateDiff(path1, path2),
+                "stylish");
+    }
+
+    private static Map<String, List<Object>> genIntermediateDiff(String path1, String path2) throws IOException {
         Path filePath1 = Path.of(path1).toAbsolutePath().normalize();
         Path filePath2 = Path.of(path2).toAbsolutePath().normalize();
 
@@ -22,8 +34,7 @@ public class Differ {
         Map<String, Object> data2 = Parser.parse(
                 Files.readString(filePath2),
                 path2.endsWith(".json") ? "json" : "yaml");
-
-        Map<String, List<Object>> differences = new LinkedHashMap<>();
+        Map<String, List<Object>> diffs = new LinkedHashMap<>();
         Set<String> mergedKeys = new TreeSet<>(data1.keySet());
         mergedKeys.addAll(data2.keySet());
         for (String key : mergedKeys) {
@@ -31,25 +42,24 @@ public class Differ {
             if (data1.containsKey(key) && !(data2.containsKey(key))) {
                 values.add("removed");
                 values.add(data1.get(key));
-                differences.put(key, new ArrayList<>(values));
+                diffs.put(key, new ArrayList<>(values));
             } else if (data2.containsKey(key) && !(data1.containsKey(key))) {
                 values.add("added");
                 values.add(data2.get(key));
-                differences.put(key, new ArrayList<>(values));
+                diffs.put(key, new ArrayList<>(values));
             } else if (((data1.get(key) == null && data2.get(key) != null)
                     || (data1.get(key) != null && data2.get(key) == null)
                     || !data1.get(key).equals(data2.get(key)))) {
                 values.add("updated");
                 values.add(data1.get(key));
                 values.add(data2.get(key));
-                differences.put(key, new ArrayList<>(values));
+                diffs.put(key, new ArrayList<>(values));
             } else {
                 values.add("unchanged");
                 values.add(data2.get(key));
-                differences.put(key, new ArrayList<>(values));
+                diffs.put(key, new ArrayList<>(values));
             }
-            values.clear();
         }
-        return Formatter.format(differences, formatName);
+        return diffs;
     }
 }

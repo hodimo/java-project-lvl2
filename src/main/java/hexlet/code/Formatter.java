@@ -21,7 +21,7 @@ public class Formatter {
             case "json" -> {
                 return jsonFormat(differences);
             }
-            default -> throw new IOException("You should use one format from description");
+            default -> throw new IOException("You should use one of these formats: stylish, plain, json");
         }
     }
 

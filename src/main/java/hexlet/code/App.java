@@ -16,10 +16,10 @@ class App implements Callable<Integer> {
     @CommandLine.Spec
     private CommandLine.Model.CommandSpec spec;
 
-    @Parameters(index = "0", defaultValue = "/home/proydemte/jsons/json1.json", description = "path to first file")
+    @Parameters(index = "0", description = "path to first file")
     private String filepath1 = "";
 
-    @Parameters(index = "1", defaultValue = "/home/proydemte/jsons/json2.json", description = "path to second file")
+    @Parameters(index = "1", description = "path to second file")
     private String filepath2 = "";
 
     @Option(names = {"-f", "--format"}, paramLabel = "format",

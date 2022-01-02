@@ -25,25 +25,6 @@ public final class AppTest {
     }
 
     @Test
-    public void testHelp() throws IOException {
-        int exitCode = cmd.execute("-h");
-        String expected = new String(Files.readAllBytes(
-                Paths.get("src/test/resources/expected/expectedAppHelp.txt").toAbsolutePath()));
-        String actual = sw.toString();
-        Assertions.assertEquals(0, exitCode);
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testVersion() {
-        int exitCode = cmd.execute("-V");
-        String expected = "gendiff 1.0\n";
-        String actual = sw.toString();
-        Assertions.assertEquals(0, exitCode);
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
     public void testStylish() throws IOException {
         int exitCode = cmd.execute("src/test/resources/filesWithData/withNesting1.json",
                 "src/test/resources/filesWithData/withNesting2.json");

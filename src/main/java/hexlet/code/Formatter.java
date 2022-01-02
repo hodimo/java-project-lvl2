@@ -32,28 +32,27 @@ public class Formatter {
             Map<String, Map<String, List<Object>>> differences) throws JsonProcessingException {
         StringBuilder diffs = new StringBuilder("{");
         for (String key: differences.keySet()) {
-            String type = (String) differences.get(key).keySet().toArray()[0];
-            List<Object> values = new ArrayList<>(differences.get(key).get(type));
-            if ("unchanged".equals(type)) {
-                diffs.append("\n    ");
-            } else if ("removed".equals(type)) {
-                diffs.append("\n  - ");
-            } else if ("added".equals(type)) {
-                diffs.append("\n  + ");
-            } else {
-                diffs.append("\n  - ").append(key).append(": ");
-                diffs.append(MAPPER.writeValueAsString(values.get(0)));
-                diffs.append("\n  + ").append(key).append(": ");
-                diffs.append(MAPPER.writeValueAsString(values.get(1)));
+            String diffType = (String) differences.get(key).keySet().toArray()[0];
+            List<Object> values = new ArrayList<>(differences.get(key).get(diffType));
+            switch (diffType) {
+                case "unchanged" -> diffs.append("\n    ");
+                case "removed" -> diffs.append("\n  - ");
+                case "added" -> diffs.append("\n  + ");
+                default -> {
+                    diffs.append("\n  - ").append(key).append(": ");
+                    diffs.append(MAPPER.writeValueAsString(values.get(0)));
+                    diffs.append("\n  + ").append(key).append(": ");
+                    diffs.append(MAPPER.writeValueAsString(values.get(1)));
+                }
             }
-            if (!type.equals("updated")) {
+            if (!diffType.equals("updated")) {
                 diffs.append(key).append(": ").append(MAPPER.writeValueAsString(values.get(0)));
             }
         }
         diffs.append("\n}");
 
         return diffs.toString()
-                .replaceAll("(\\\"):(\\\"|(.+))", "$1=$1$3")
+                .replaceAll("(\"):(\"|(.+))", "$1=$1$3")
                 .replaceAll("\"", "")
                 .replaceAll(",\\n", "\n")
                 .replaceAll("((( {4})|( {2}- )|( {2}\\+ )).+:) \\n", "$1\n")
@@ -63,9 +62,9 @@ public class Formatter {
     private static String plainFormat(Map<String, Map<String, List<Object>>> differences) throws IOException {
         StringBuilder diffs = new StringBuilder();
         for (String key: differences.keySet()) {
-            String type = (String) differences.get(key).keySet().toArray()[0];
-            List<Object> values = new ArrayList<>(differences.get(key).get(type));
-            switch (type) {
+            String diffType = (String) differences.get(key).keySet().toArray()[0];
+            List<Object> values = new ArrayList<>(differences.get(key).get(diffType));
+            switch (diffType) {
                 case "removed" -> diffs.append(String.format(
                         "Property '%s' was removed%n",
                         key.replaceAll("\"", "")));
@@ -84,12 +83,11 @@ public class Formatter {
         return diffs.deleteCharAt(diffs.length() - 1).toString();
     }
     private static String processValueForPlain(String serializedValue) {
-        if (serializedValue.matches("((\\{)|(\\[)).+((})|(]))")) {
+        if (serializedValue.matches("((\\{)|(\\[)).*((})|(]))")) {
             return "[complex value]";
+        } else {
+            return serializedValue.replaceAll("\"(.*)\"", "'$1'");
         }
-        return serializedValue.matches("\".+\"")
-                ? serializedValue.replaceAll("\"", "'")
-                : serializedValue;
     }
 
     private static String jsonFormat(Map<String, Map<String, List<Object>>> differences) throws IOException {

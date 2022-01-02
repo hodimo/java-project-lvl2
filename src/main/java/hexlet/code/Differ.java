@@ -12,22 +12,25 @@ import java.util.TreeSet;
 
 
 public class Differ {
-    public static String generate(String path1, String path2, String formatName) throws IOException {
+    public static String generate(String pathAsStr1, String pathAsStr2, String formatName) throws IOException {
+        Path path1 = Path.of(pathAsStr1).toAbsolutePath().normalize();
+        String content1 = Files.readString(path1);
+        Map<String, Object> data1 = Parser.parse(content1, pathAsStr1.endsWith(".json") ? "json" : "yaml");
+
+        Path path2 = Path.of(pathAsStr2).toAbsolutePath().normalize();
+        String content2 = Files.readString(path2);
+        Map<String, Object> data2 = Parser.parse(content2, pathAsStr2.endsWith(".json") ? "json" : "yaml");
         return Formatter.format(
-                genIntermediateDiff(path1, path2),
+                genIntermediateDiff(data1, data2),
                 formatName);
     }
 
-    public static String generate(String path1, String path2) throws IOException {
-        return Formatter.format(
-                genIntermediateDiff(path1, path2),
-                "stylish");
+    public static String generate(String pathAsStr1, String pathAsStr2) throws IOException {
+        return generate(pathAsStr1, pathAsStr2, "stylish");
     }
 
     private static Map<String, Map<String, List<Object>>> genIntermediateDiff(
-            String path1, String path2) throws IOException {
-        Map<String, Object> data1 = getContentAsMap(path1);
-        Map<String, Object> data2 = getContentAsMap(path2);
+            Map<String, Object> data1, Map<String, Object> data2) throws IOException {
 
         Map<String, Map<String, List<Object>>> diffs = new LinkedHashMap<>();
         Set<String> mergedKeys = new TreeSet<>(data1.keySet());
@@ -52,11 +55,5 @@ public class Differ {
             }
         }
         return diffs;
-    }
-
-    private static Map<String, Object> getContentAsMap(String filePath) throws IOException {
-        Path path = Path.of(filePath).toAbsolutePath().normalize();
-        String content = Files.readString(path);
-        return Parser.parse(content, filePath.endsWith(".json") ? "json" : "yaml");
     }
 }

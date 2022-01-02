@@ -4,13 +4,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class Formatter {
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    public static String format(Map<String, List<Object>> differences, String formatName) throws IOException {
+
+    public static String format(
+            Map<String, Map<String, List<Object>>> differences,
+            String formatName) throws IOException {
         switch (formatName) {
             case "stylish" -> {
                 return stylishFormat(differences);
@@ -25,24 +28,26 @@ public class Formatter {
         }
     }
 
-    private static String stylishFormat(Map<String, List<Object>> differences) throws JsonProcessingException {
+    private static String stylishFormat(
+            Map<String, Map<String, List<Object>>> differences) throws JsonProcessingException {
         StringBuilder diffs = new StringBuilder("{");
         for (String key: differences.keySet()) {
-            String label = (String) differences.get(key).get(0);
-            switch (label) {
-                case "unchanged" -> diffs.append("\n    ").append(key).append(": ");
-                case "removed" -> diffs.append("\n  - ").append(key).append(": ");
-                case "added" -> diffs.append("\n  + ").append(key).append(": ");
-                case "updated" -> {
-                    diffs.append("\n  - ").append(key).append(": ");
-                    diffs.append(MAPPER.writeValueAsString(differences.get(key).get(1)));
-                    diffs.append("\n  + ").append(key).append(": ");
-                    diffs.append(MAPPER.writeValueAsString(differences.get(key).get(2)));
-                }
-                default -> diffs.append("");
+            String type = (String) differences.get(key).keySet().toArray()[0];
+            List<Object> values = new ArrayList<>(differences.get(key).get(type));
+            if ("unchanged".equals(type)) {
+                diffs.append("\n    ");
+            } else if ("removed".equals(type)) {
+                diffs.append("\n  - ");
+            } else if ("added".equals(type)) {
+                diffs.append("\n  + ");
+            } else {
+                diffs.append("\n  - ").append(key).append(": ");
+                diffs.append(MAPPER.writeValueAsString(values.get(0)));
+                diffs.append("\n  + ").append(key).append(": ");
+                diffs.append(MAPPER.writeValueAsString(values.get(1)));
             }
-            if (!label.equals("updated")) {
-                diffs.append(MAPPER.writeValueAsString(differences.get(key).get(1)));
+            if (!type.equals("updated")) {
+                diffs.append(key).append(": ").append(MAPPER.writeValueAsString(values.get(0)));
             }
         }
         diffs.append("\n}");
@@ -55,23 +60,24 @@ public class Formatter {
                 .replaceAll(",", ", ");
     }
 
-    private static String plainFormat(Map<String, List<Object>> differences) throws IOException {
+    private static String plainFormat(Map<String, Map<String, List<Object>>> differences) throws IOException {
         StringBuilder diffs = new StringBuilder();
         for (String key: differences.keySet()) {
-            String label = (String) differences.get(key).get(0);
-            switch (label) {
+            String type = (String) differences.get(key).keySet().toArray()[0];
+            List<Object> values = new ArrayList<>(differences.get(key).get(type));
+            switch (type) {
                 case "removed" -> diffs.append(String.format(
                         "Property '%s' was removed%n",
                         key.replaceAll("\"", "")));
                 case "added" -> diffs.append(String.format(
                         "Property '%s' was added with value: %s%n",
                         key.replaceAll("\"", ""),
-                        processValueForPlain(MAPPER.writeValueAsString(differences.get(key).get(1)))));
+                        processValueForPlain(MAPPER.writeValueAsString(values.get(0)))));
                 case "updated" -> diffs.append(String.format(
                         "Property '%s' was updated. From %s to %s%n",
                         key.replaceAll("\"", ""),
-                        processValueForPlain(MAPPER.writeValueAsString(differences.get(key).get(1))),
-                        processValueForPlain(MAPPER.writeValueAsString(differences.get(key).get(2)))));
+                        processValueForPlain(MAPPER.writeValueAsString(values.get(0))),
+                        processValueForPlain(MAPPER.writeValueAsString(values.get(1)))));
                 default -> diffs.append("");
             }
         }
@@ -86,27 +92,7 @@ public class Formatter {
                 : serializedValue;
     }
 
-    private static String jsonFormat(Map<String, List<Object>> differences) throws IOException {
-        Map<String, Map<String, Object>> diffs = new LinkedHashMap<>();
-        for (String key : differences.keySet()) {
-            Map<String, Object> values = new LinkedHashMap<>();
-            String label = (String) differences.get(key).get(0);
-            if ("removed".equals(label)) {
-                values.put("oldValue", differences.get(key).get(1));
-                values.put("newValue", null);
-            } else if ("added".equals(label)) {
-                values.put("oldValue", null);
-                values.put("newValue", differences.get(key).get(1));
-            } else if ("updated".equals(label)) {
-                values.put("oldValue", differences.get(key).get(1));
-                values.put("newValue", differences.get(key).get(2));
-            } else {
-                values.put("oldValue", differences.get(key).get(1));
-                values.put("newValue", differences.get(key).get(1));
-            }
-            diffs.put(key, values);
-        }
-
-        return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(diffs);
+    private static String jsonFormat(Map<String, Map<String, List<Object>>> differences) throws IOException {
+        return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(differences);
     }
 }

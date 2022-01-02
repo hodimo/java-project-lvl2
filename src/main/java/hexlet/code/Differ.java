@@ -24,7 +24,8 @@ public class Differ {
                 "stylish");
     }
 
-    private static Map<String, List<Object>> genIntermediateDiff(String path1, String path2) throws IOException {
+    private static Map<String, Map<String, List<Object>>> genIntermediateDiff(
+            String path1, String path2) throws IOException {
         Path filePath1 = Path.of(path1).toAbsolutePath().normalize();
         Path filePath2 = Path.of(path2).toAbsolutePath().normalize();
 
@@ -35,30 +36,26 @@ public class Differ {
                 Files.readString(filePath2),
                 path2.endsWith(".json") ? "json" : "yaml");
 
-        Map<String, List<Object>> diffs = new LinkedHashMap<>();
+        Map<String, Map<String, List<Object>>> diffs = new LinkedHashMap<>();
         Set<String> mergedKeys = new TreeSet<>(data1.keySet());
         mergedKeys.addAll(data2.keySet());
         for (String key : mergedKeys) {
             List<Object> values = new ArrayList<>();
             if (data1.containsKey(key) && !(data2.containsKey(key))) {
-                values.add("removed");
                 values.add(data1.get(key));
-                diffs.put(key, new ArrayList<>(values));
+                diffs.put(key, Map.of("removed", new ArrayList<>(values)));
             } else if (data2.containsKey(key) && !(data1.containsKey(key))) {
-                values.add("added");
                 values.add(data2.get(key));
-                diffs.put(key, new ArrayList<>(values));
+                diffs.put(key, Map.of("added", new ArrayList<>(values)));
             } else if (((data1.get(key) == null && data2.get(key) != null)
                     || (data1.get(key) != null && data2.get(key) == null)
                     || !data1.get(key).equals(data2.get(key)))) {
-                values.add("updated");
                 values.add(data1.get(key));
                 values.add(data2.get(key));
-                diffs.put(key, new ArrayList<>(values));
+                diffs.put(key, Map.of("updated", new ArrayList<>(values)));
             } else {
-                values.add("unchanged");
                 values.add(data2.get(key));
-                diffs.put(key, new ArrayList<>(values));
+                diffs.put(key, Map.of("unchanged", new ArrayList<>(values)));
             }
         }
         return diffs;

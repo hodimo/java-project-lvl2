@@ -26,15 +26,8 @@ public class Differ {
 
     private static Map<String, Map<String, List<Object>>> genIntermediateDiff(
             String path1, String path2) throws IOException {
-        Path filePath1 = Path.of(path1).toAbsolutePath().normalize();
-        Path filePath2 = Path.of(path2).toAbsolutePath().normalize();
-
-        Map<String, Object> data1 = Parser.parse(
-                Files.readString(filePath1),
-                path1.endsWith(".json") ? "json" : "yaml");
-        Map<String, Object> data2 = Parser.parse(
-                Files.readString(filePath2),
-                path2.endsWith(".json") ? "json" : "yaml");
+        Map<String, Object> data1 = getContentAsMap(path1);
+        Map<String, Object> data2 = getContentAsMap(path2);
 
         Map<String, Map<String, List<Object>>> diffs = new LinkedHashMap<>();
         Set<String> mergedKeys = new TreeSet<>(data1.keySet());
@@ -59,5 +52,11 @@ public class Differ {
             }
         }
         return diffs;
+    }
+
+    private static Map<String, Object> getContentAsMap(String filePath) throws IOException {
+        Path path = Path.of(filePath).toAbsolutePath().normalize();
+        String content = Files.readString(path);
+        return Parser.parse(content, filePath.endsWith(".json") ? "json" : "yaml");
     }
 }

@@ -34,6 +34,7 @@ public class Differ {
         Map<String, Object> data2 = Parser.parse(
                 Files.readString(filePath2),
                 path2.endsWith(".json") ? "json" : "yaml");
+
         Map<String, List<Object>> diffs = new LinkedHashMap<>();
         Set<String> mergedKeys = new TreeSet<>(data1.keySet());
         mergedKeys.addAll(data2.keySet());

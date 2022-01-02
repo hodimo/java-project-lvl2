@@ -75,12 +75,4 @@ public final class AppTest {
         Assertions.assertEquals(0, exitCode);
         Assertions.assertEquals(expected, actual);
     }
-
-//    @Test
-//    public void testAppWithStylishViaRegex() {
-//        int exitCode = cmd.execute("file1.json", "file2.json");
-//        String actual = sw.toString();
-//        Assertions.assertEquals(0, exitCode);
-//        Assertions.assertTrue(actual.matches("\\{\\n(\\s{2}(\\+|-|\\s)\\s:.+\\n)+}\\n"));
-//    }
 }

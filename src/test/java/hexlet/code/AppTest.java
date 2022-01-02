@@ -48,7 +48,7 @@ public final class AppTest {
         int exitCode = cmd.execute("src/test/resources/filesWithData/withNesting1.json",
                 "src/test/resources/filesWithData/withNesting2.json");
         String expected = new String(Files.readAllBytes(
-                Paths.get("src/test/resources/expected/expectedDifferencesWithNesting.txt").toAbsolutePath()));
+                Paths.get("src/test/resources/expected/expectedDifferencesStylish.txt").toAbsolutePath()));
         String actual = sw.toString();
         Assertions.assertEquals(0, exitCode);
         Assertions.assertEquals(expected, actual);

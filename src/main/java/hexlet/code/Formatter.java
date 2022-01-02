@@ -107,6 +107,6 @@ public class Formatter {
             diffs.put(key, values);
         }
 
-        return MAPPER.writeValueAsString(diffs);
+        return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(diffs);
     }
 }

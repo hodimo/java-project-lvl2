@@ -11,7 +11,7 @@
 <details>
     <summary>Differences in stylish format</summary>
 
-[![asciicast](https://asciinema.org/a/WaSvhK3cDwXBmbqgoHUS0aPUJ.svg)](https://asciinema.org/a/WaSvhK3cDwXBmbqgoHUS0aPUJ)
+[![asciicast](https://asciinema.org/a/Z2DtcxXOpjBen5vBrQKdntHLJ.svg)](https://asciinema.org/a/Z2DtcxXOpjBen5vBrQKdntHLJ)
 </details>
 <details>
     <summary>Differences in plain format</summary>

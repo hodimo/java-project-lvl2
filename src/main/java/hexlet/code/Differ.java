@@ -3,6 +3,7 @@ package hexlet.code;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -29,30 +30,34 @@ public class Differ {
         return generate(pathAsStr1, pathAsStr2, "stylish");
     }
 
-    private static Map<String, Map<String, List<Object>>> genIntermediateDiff(
-            Map<String, Object> data1, Map<String, Object> data2) throws IOException {
+    private static List<Map<String, Object>> genIntermediateDiff(
+            Map<String, Object> data1, Map<String, Object> data2) {
 
-        Map<String, Map<String, List<Object>>> diffs = new LinkedHashMap<>();
+        List<Map<String, Object>> diffs = new ArrayList<>();
         Set<String> mergedKeys = new TreeSet<>(data1.keySet());
         mergedKeys.addAll(data2.keySet());
         for (String key : mergedKeys) {
-            List<Object> values = new ArrayList<>();
-            if (data1.containsKey(key) && !(data2.containsKey(key))) {
-                values.add(data1.get(key));
-                diffs.put(key, Map.of("removed", new ArrayList<>(values)));
-            } else if (data2.containsKey(key) && !(data1.containsKey(key))) {
-                values.add(data2.get(key));
-                diffs.put(key, Map.of("added", new ArrayList<>(values)));
-            } else if (((data1.get(key) == null && data2.get(key) != null)
-                    || (data1.get(key) != null && data2.get(key) == null)
-                    || !data1.get(key).equals(data2.get(key)))) {
-                values.add(data1.get(key));
-                values.add(data2.get(key));
-                diffs.put(key, Map.of("updated", new ArrayList<>(values)));
+            Map<String, Object> map = new LinkedHashMap<>();
+            if (!(data2.containsKey(key))) {
+                map.put("status", "removed");
+                map.put("fieldName", key);
+                map.put("oldValue", data1.get(key));
+            } else if (!(data1.containsKey(key))) {
+                map.put("status", "added");
+                map.put("fieldName", key);
+                map.put("newValue", data2.get(key));
+            } else if (!Objects.equals(data1.get(key), data2.get(key))) {
+                map.put("status", "updated");
+                map.put("fieldName", key);
+                map.put("oldValue", data1.get(key));
+                map.put("newValue", data2.get(key));
             } else {
-                values.add(data2.get(key));
-                diffs.put(key, Map.of("unchanged", new ArrayList<>(values)));
+                map.put("status", "unchanged");
+                map.put("fieldName", key);
+                map.put("oldValue", data1.get(key));
+                map.put("newValue", data2.get(key));
             }
+            diffs.add(map);
         }
         return diffs;
     }

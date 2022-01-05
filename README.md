@@ -21,5 +21,5 @@
 <details>
     <summary>Differences in json format</summary>
 
-[![asciicast](https://asciinema.org/a/UEwezwv3Yo5nYZcyAA2nNREc6.svg)](https://asciinema.org/a/UEwezwv3Yo5nYZcyAA2nNREc6)
+[![asciicast](https://asciinema.org/a/YaViIE3OQ0lMcuhm7CoWaScZk.svg)](https://asciinema.org/a/YaViIE3OQ0lMcuhm7CoWaScZk)
 </details>

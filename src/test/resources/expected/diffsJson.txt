@@ -1,0 +1,74 @@
+[ {
+  "status" : "unchanged",
+  "fieldName" : "chars1",
+  "oldValue" : [ "a", "b", "c" ],
+  "newValue" : [ "a", "b", "c" ]
+}, {
+  "status" : "updated",
+  "fieldName" : "chars2",
+  "oldValue" : [ "d", "e", "f" ],
+  "newValue" : false
+}, {
+  "status" : "updated",
+  "fieldName" : "checked",
+  "oldValue" : false,
+  "newValue" : true
+}, {
+  "status" : "updated",
+  "fieldName" : "default",
+  "oldValue" : null,
+  "newValue" : [ "value1", "value2" ]
+}, {
+  "status" : "updated",
+  "fieldName" : "id",
+  "oldValue" : 45,
+  "newValue" : null
+}, {
+  "status" : "removed",
+  "fieldName" : "key1",
+  "oldValue" : "value1"
+}, {
+  "status" : "added",
+  "fieldName" : "key2",
+  "newValue" : "value2"
+}, {
+  "status" : "unchanged",
+  "fieldName" : "numbers1",
+  "oldValue" : [ 1, 2, 3, 4 ],
+  "newValue" : [ 1, 2, 3, 4 ]
+}, {
+  "status" : "updated",
+  "fieldName" : "numbers2",
+  "oldValue" : [ 2, 3, 4, 5 ],
+  "newValue" : [ 22, 33, 44, 55 ]
+}, {
+  "status" : "removed",
+  "fieldName" : "numbers3",
+  "oldValue" : [ 3, 4, 5 ]
+}, {
+  "status" : "added",
+  "fieldName" : "numbers4",
+  "newValue" : [ 4, 5, 6 ]
+}, {
+  "status" : "added",
+  "fieldName" : "obj1",
+  "newValue" : {
+    "nestedKey" : "value",
+    "isNested" : true
+  }
+}, {
+  "status" : "updated",
+  "fieldName" : "setting1",
+  "oldValue" : "Some value",
+  "newValue" : "Another value"
+}, {
+  "status" : "updated",
+  "fieldName" : "setting2",
+  "oldValue" : 200,
+  "newValue" : 300
+}, {
+  "status" : "updated",
+  "fieldName" : "setting3",
+  "oldValue" : true,
+  "newValue" : "none"
+} ]

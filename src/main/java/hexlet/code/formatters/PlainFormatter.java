@@ -12,17 +12,17 @@ public class PlainFormatter {
             switch ((String) diff.get("status")) {
                 case "removed" -> sb.append(String.format("Property '%s' was removed%n", fieldName));
                 case "added" -> sb.append(String.format("Property '%s' was added with value: %s%n", fieldName,
-                        processValueForPlain(diff.get("newValue"))));
+                        processValue(diff.get("newValue"))));
                 case "updated" -> sb.append(String.format("Property '%s' was updated. From %s to %s%n", fieldName,
-                        processValueForPlain(diff.get("oldValue")),
-                        processValueForPlain(diff.get("newValue"))));
+                        processValue(diff.get("oldValue")),
+                        processValue(diff.get("newValue"))));
                 default -> sb.append("");
             }
         }
         return sb.deleteCharAt(sb.length() - 1).toString();
     }
 
-    private static String processValueForPlain(Object value) {
+    private static String processValue(Object value) {
         if (value instanceof Object[]
                 || value instanceof Collection
                 || value instanceof Map) {
